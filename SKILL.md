@@ -1,6 +1,6 @@
 ---
 name: meeting-context
-version: 0.4.0
+version: 0.4.1
 description: "获取飞书妙记会议内容（逐字稿 + 可选 AI 摘要/待办）并注入 Claude 上下文。支持：飞书妙记链接（*.feishu.cn/minutes/...）、会议标题关键词、minute_token。会议结束后使用，自动拉取完整逐字稿供后续分析、需求整理、纪要撰写。当用户说「读取会议内容」「获取会议逐字稿」「把会议内容作为上下文」「这个妙记链接」「昨天的产品评审会」等时触发。"
 metadata:
   requires:
@@ -18,6 +18,46 @@ metadata:
 **已验证路径（2026-06-04）：**
 - 妙记 URL → 提取 token → `lark-cli vc +notes` → 读取 `transcript.txt` ✅
 - 标题关键词 → `lark-cli minutes +search --query` → token → `lark-cli vc +notes` ✅
+
+## 前置检查（首次使用 / 新机器必做）
+
+执行任何取数命令前，**先确认 `lark-cli` 已安装并完成配置**。按顺序检查：
+
+### 1. 检查 lark-cli 是否安装
+
+```bash
+command -v lark-cli && lark-cli --version || echo "NOT_INSTALLED"
+```
+
+若输出 `NOT_INSTALLED`（或 command not found），引导用户安装：
+
+```bash
+# 方式 A（推荐，需 Node.js ≥ 18）：
+npm install -g @larksuite/cli
+
+# 方式 B：从 GitHub Releases 下载对应平台二进制
+#   https://github.com/larksuite/cli/releases
+```
+
+- 若用户没有 Node/npm，提示先装 Node.js（https://nodejs.org）或走方式 B
+- 安装后重新执行 `lark-cli --version` 确认
+
+### 2. 检查配置与认证
+
+```bash
+lark-cli auth status 2>&1 | head -20
+```
+
+- 报「未配置应用」/ 无 appId → 引导运行 `lark-cli config init`（详见 lark-shared）
+- `user` 身份非 ready，或下一步报 `missing_scope` → 运行下方授权命令
+
+### 3. 授权所需 scope（首次或权限报错时）
+
+```bash
+lark-cli auth login --scope "minutes:minutes:readonly minutes:minutes.artifacts:read minutes:minutes.transcript:export"
+```
+
+> 三步全部就绪后再进入「标准执行流程」。已装好的老用户可跳过本节。
 
 ## 所需 scope
 
