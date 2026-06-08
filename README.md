@@ -10,6 +10,14 @@
 
 ### 1. 安装 skill
 
+**若你有 `kevinw99/base` 读权限（内部协作者优先用此路径，始终拿到最新版）：**
+
+```bash
+npx skills add kevinw99/base --path skills/meeting-context
+```
+
+**公开镜像仓库（无内部权限时）：**
+
 ```bash
 npx skills add oirep/meeting-context
 ```
