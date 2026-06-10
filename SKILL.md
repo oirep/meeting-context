@@ -1,6 +1,6 @@
 ---
 name: meeting-context
-version: 0.7.0
+version: 0.7.1
 description: "获取飞书会议内容（逐字稿 + 可选 AI 摘要/待办）并注入 Claude 上下文。支持：飞书妙记链接（*.feishu.cn/minutes/...）、飞书智能纪要/文字记录文档链接（*.feishu.cn/docx/...）、会议标题关键词、minute_token。会议结束后使用，自动拉取完整逐字稿供后续分析、需求整理、纪要撰写。即使不是会议属主、仅有共享/参会权限也可读取（经文档路径）。当用户说「读取会议内容」「获取会议逐字稿」「把会议内容作为上下文」「这个妙记链接」「这个纪要链接」「昨天的产品评审会」等时触发。"
 metadata:
   requires:
@@ -57,7 +57,7 @@ lark-cli auth status 2>&1 | head -20
 ### 3. 授权所需 scope（首次或权限报错时）
 
 ```bash
-lark-cli auth login --scope "minutes:minutes:readonly minutes:minutes.artifacts:read minutes:minutes.transcript:export"
+lark-cli auth login --scope "minutes:minutes:readonly minutes:minutes.artifacts:read minutes:minutes.transcript:export minutes:minutes.search:read vc:note:read"
 ```
 
 > 三步全部就绪后再进入「标准执行流程」。已装好的老用户可跳过本节。
@@ -67,7 +67,7 @@ lark-cli auth login --scope "minutes:minutes:readonly minutes:minutes.artifacts:
 首次使用如遇权限错误，运行以下命令完成授权（浏览器扫码或打开链接）：
 
 ```bash
-lark-cli auth login --scope "minutes:minutes:readonly minutes:minutes.artifacts:read minutes:minutes.transcript:export"
+lark-cli auth login --scope "minutes:minutes:readonly minutes:minutes.artifacts:read minutes:minutes.transcript:export minutes:minutes.search:read vc:note:read"
 ```
 
 | scope | 用途 |
@@ -76,6 +76,7 @@ lark-cli auth login --scope "minutes:minutes:readonly minutes:minutes.artifacts:
 | `minutes:minutes:readonly` | 访问妙记基础信息 |
 | `minutes:minutes.artifacts:read` | 获取 AI 产物（摘要、待办、章节） |
 | `minutes:minutes.transcript:export` | 下载逐字稿文本文件 |
+| `vc:note:read` | `vc +notes` 读取会议纪要数据（缺失会报 `missing_scope`，2026-06-10 实测） |
 
 ## 标准执行流程
 

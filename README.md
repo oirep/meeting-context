@@ -36,7 +36,7 @@ lark-cli config init                # 首次配置应用（按提示扫码/打�
 ### 3. 授权所需权限（首次）
 
 ```bash
-lark-cli auth login --scope "minutes:minutes:readonly minutes:minutes.artifacts:read minutes:minutes.transcript:export"
+lark-cli auth login --scope "minutes:minutes:readonly minutes:minutes.artifacts:read minutes:minutes.transcript:export minutes:minutes.search:read vc:note:read"
 ```
 
 完成后即可使用。
